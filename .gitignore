@@ -1,0 +1,29 @@
+.idea/
+.cache/
+.vscode/
+_build/
+coverage/
+reports/
+dist/
+node_modules/
+.DS_Store
+*.tgz
+yarn-debug.log*
+yarn-error.log*
+/.changelog
+junit.xml
+
+# .env and .env.${NODE_ENV} are shared configuration
+# .env.local and .env.${NODE_ENV}.local are ignored
+*.local
+.env
+
+schema.json
+stats.json
+.env.production
+
+rootCA.key
+*.srl
+*.csr
+*.cnf
+v3.ext

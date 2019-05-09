@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "target": "es2017",
+    "checkJs": false,
+    "allowSyntheticDefaultImports": false,
+    "module": "commonjs",
+    "baseUrl": ".",
+    "paths": {
+      "@todomvc/test_support/*": ["src/__tests__/support/*"],
+      "@todomvc/*": ["src/*"]
+    }
+  },
+  "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.json"],
+  "exclude": ["node_modules", "dist"]
+}
