@@ -23,7 +23,17 @@ const shownTodos = (todos, nowShowing) => {
 
 // COMPONENTS
 
-const Main = React.memo(({ controller, todos, activeTodoCount, nowShowing, toggleAll }) => {
+/**
+ * Provides a page component partial including the todo list.
+ *
+ * @param {Object} props - the component props
+ * @param {Controller} props.controller - the view controller
+ * @param {[Todo]} props.todos - the list of todos
+ * @param {Number} props.activeTodoCount - the number of uncompleted todos
+ * @param {string} props.nowShowing - the current filter set
+ * @param {Function} props.toggleAll - the toggleAll handler
+ */
+const Main = ({ controller, todos, activeTodoCount, nowShowing, toggleAll }) => {
   const [editing, setEditing] = useState(null);
 
   const filtered = useMemo(() => {
@@ -63,7 +73,7 @@ const Main = React.memo(({ controller, todos, activeTodoCount, nowShowing, toggl
       <ul className="todo-list">{todoItems}</ul>
     </section>
   );
-});
+};
 
 Main.propTypes = {
   controller: PropTypes.any,
@@ -80,6 +90,8 @@ Main.defaultProps = {
   nowShowing: filters.ALL_TODOS,
   toggleAll: () => {},
 };
+
+Main.displayName = 'TodosMain';
 
 // PUBLIC API
 

@@ -39,13 +39,25 @@ const filterForRoute = ({ name }) => {
 
 // COMPONENTS
 
+/**
+ * Provides a page component for Todos.
+ *
+ * This page must be wrapped in a `TodoViewModel`, which provides the view controller
+ * and the state reducer.
+ *
+ * @example
+ *
+ * <TodosViewModel initialState={{ todos: [] }} apolloClient={apolloClient}>
+ *   <Todos />
+ * </TodosViewModel>
+ *
+ */
 const Todos = () => {
   const { route } = useRoute();
 
   const [{ todos }, controller] = useTodoViewModel();
 
   const [newTodo, setNewTodo] = useState('');
-
   const [nowShowing, setNowShowing] = useState(filters.ALL_TODOS);
 
   useEffect(() => {
@@ -61,6 +73,8 @@ const Todos = () => {
 
   const activeTodoCount = todos.reduce((acc, todo) => (todo.completed ? acc : acc + 1), 0);
   const completedCount = todos.length - activeTodoCount;
+
+  const toggleDir = completedCount - activeTodoCount <= 0;
 
   return (
     <div>
@@ -81,7 +95,7 @@ const Todos = () => {
         todos={todos}
         activeTodoCount={activeTodoCount}
         nowShowing={nowShowing}
-        toggleAll={() => controller.toggleAllTodos()}
+        toggleAll={() => controller.toggleAllTodos(toggleDir)}
       />
       <Footer
         count={activeTodoCount}

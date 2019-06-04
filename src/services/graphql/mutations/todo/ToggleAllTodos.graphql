@@ -1,0 +1,7 @@
+mutation ToggleAllTodos($checked: Boolean!) {
+    toggleAllTodos(checked: $checked) {
+        id
+        title
+        completed
+    }
+}

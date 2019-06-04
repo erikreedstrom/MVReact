@@ -1,0 +1,7 @@
+mutation DestroyTodo($id: ID!) {
+    destroyTodo(id: $id) {
+        id
+        title
+        completed
+    }
+}

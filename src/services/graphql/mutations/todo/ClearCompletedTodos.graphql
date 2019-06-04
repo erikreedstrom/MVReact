@@ -1,0 +1,7 @@
+mutation ClearCompletedTodos {
+    clearCompletedTodos {
+        id
+        title
+        completed
+    }
+}

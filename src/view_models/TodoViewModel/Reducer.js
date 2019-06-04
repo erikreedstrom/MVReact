@@ -1,57 +1,40 @@
-import uuid from 'uuid/v4';
-
+/**
+ * Provides state management for the TodoViewModel.
+ *
+ * The reducer defines how new state should merge into existing state.
+ * It does this through handling events dispatched from the view controller.
+ *
+ * For instance, when we update the
+ */
 class Reducer {
-  static addTodo(state, { title }) {
-    const todos = state.todos.concat({
-      id: uuid(),
-      title: title,
-      completed: false,
-    });
-
-    return { ...state, todos };
-  }
-
-  static toggleAll(state, { checked }) {
-    const todos = state.todos.map(todo => {
-      return Object.assign({}, todo, { completed: checked });
-    });
-
-    return { ...state, todos };
-  }
-
-  static toggle(state, { todo: todoToToggle }) {
-    const todos = state.todos.map(todo => {
-      return todo !== todoToToggle ? todo : Object.assign({}, todo, { completed: !todo.completed });
-    });
-
-    return { ...state, todos };
-  }
-
-  static destroy(state, { todo }) {
-    const todos = state.todos.filter(candidate => candidate !== todo);
-
-    return { ...state, todos };
-  }
-
-  static save(state, { todo: todoToSave, text }) {
-    const todos = state.todos.map(todo => {
-      return todo !== todoToSave ? todo : Object.assign({}, todo, { title: text });
-    });
-
-    return { ...state, todos };
-  }
-
-  static clearCompleted(state) {
-    const todos = state.todos.filter(todo => !todo.completed);
-
+  /**
+   * Replaces existing `todos` in the component state with a new list.
+   *
+   * @param {Object} state - the current state of the page component
+   * @param {[Object]} todos - the updated list of todos
+   *
+   * @returns {{todos: *}} the state with updated todos
+   */
+  static todosUpdated(state, { todos }) {
     return { ...state, todos };
   }
 }
 
 // PUBLIC API
 
-export default Reducer;
-
+/**
+ * Provides a reducer function to pass to `useReducer`.
+ *
+ * All events dispatched to the reducer function are delegated to
+ * the Reducer class as static methods.
+ *
+ * @param {Object} state - the current state of the page component
+ * @param {Object} event - a dispatched event
+ * @param {string} event.type - the event type
+ * @param {Object} [event.args] - additional event parameters
+ *
+ * @returns {Object} the updated state
+ */
 export function reducer(state, { type, ...args }) {
   return Reducer[type].call({}, state, args);
 }

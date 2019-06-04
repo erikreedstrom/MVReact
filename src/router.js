@@ -4,6 +4,13 @@ import loggerPlugin from 'router5-plugin-logger';
 
 import routes, { pathNames } from './routes';
 
+/**
+ * Configures the application router.
+ *
+ * @param {Dependencies} dependencies - made available in middleware and plugins
+ *
+ * @returns {Router} a router5 router instance
+ */
 export function configureRouter(dependencies = {}) {
   const router = router5(routes, { trailingSlashMode: 'default' }, dependencies);
 

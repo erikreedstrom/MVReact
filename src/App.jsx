@@ -1,5 +1,6 @@
 import React from 'react';
 import { useRoute } from 'react-router5';
+import PropTypes from 'prop-types';
 
 import { pathNames } from '@todomvc/router';
 
@@ -8,7 +9,13 @@ import TodosViewModel from '@todomvc/view_models/TodoViewModel';
 
 // COMPONENTS
 
-function App() {
+/**
+ * The top level application instance.
+ *
+ * @param {Object} props - the component props
+ * @param {ApolloClient} props.apolloClient - the graphql client
+ */
+function App({ apolloClient }) {
   const { route } = useRoute();
 
   const topLevelRoute = route.name.split('.')[0];
@@ -16,7 +23,7 @@ function App() {
   switch (topLevelRoute) {
     case pathNames.TODOS:
       return (
-        <TodosViewModel initialState={{ todos: [] }}>
+        <TodosViewModel initialState={{ todos: [] }} apolloClient={apolloClient}>
           <Todos />
         </TodosViewModel>
       );
@@ -24,6 +31,10 @@ function App() {
       return null;
   }
 }
+
+App.propTypes = {
+  apolloClient: PropTypes.any,
+};
 
 // PUBLIC API
 

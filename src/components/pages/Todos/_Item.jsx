@@ -10,7 +10,7 @@ const ENTER_KEY = 13;
 // HANDLERS
 
 const handleSubmit = ([editText, setEditText], { onSave, onDestroy }) => _event => {
-  var val = editText.trim();
+  let val = editText.trim();
   if (val) {
     onSave(val);
     setEditText(val);
@@ -41,7 +41,19 @@ const handleChange = (setEditText, { editing }) => event => {
 
 // COMPONENTS
 
-const Item = React.memo(({ todo, editing, onCancel, onDestroy, onEdit, onSave, onToggle }) => {
+/**
+ * Provides a list item component rendering the `Todo` item.
+ *
+ * @param {Object} props - the component props
+ * @param {Todo} props.todo - the todo item
+ * @param {boolean} props.editing - true if item being edited
+ * @param {Function} props.onCancel - the cancel editing handler
+ * @param {Function} props.onDestroy - the delete item handler
+ * @param {Function} props.onEdit - the edit item handler
+ * @param {Function} props.onSave - the save item handler
+ * @param {Function} props.onToggle - the toggle item handler
+ */
+const Item = ({ todo, editing, onCancel, onDestroy, onEdit, onSave, onToggle }) => {
   const inputRef = useRef();
   const [editText, setEditText] = useState(todo.title);
 
@@ -53,6 +65,8 @@ const Item = React.memo(({ todo, editing, onCancel, onDestroy, onEdit, onSave, o
       node.setSelectionRange(node.value.length, node.value.length);
     }
   }, [prevEditing, editing]);
+
+  const memoHandleEdit = useCallback(handleEdit(setEditText, { todo, onEdit }));
 
   const memoHandleSubmit = useCallback(handleSubmit([editText, setEditText], { onSave, onDestroy }), [
     editText,
@@ -74,7 +88,7 @@ const Item = React.memo(({ todo, editing, onCancel, onDestroy, onEdit, onSave, o
     <li className={classNames({ completed: todo.completed, editing: editing })}>
       <div className="view">
         <input className="toggle" type="checkbox" checked={todo.completed} onChange={onToggle} />
-        <label onDoubleClick={handleEdit(setEditText, { todo, onEdit })}>{todo.title}</label>
+        <label onDoubleClick={memoHandleEdit}>{todo.title}</label>
         <button className="destroy" onClick={onDestroy} />
       </div>
       <input
@@ -87,7 +101,7 @@ const Item = React.memo(({ todo, editing, onCancel, onDestroy, onEdit, onSave, o
       />
     </li>
   );
-});
+};
 
 Item.displayName = 'TodoItem';
 
@@ -113,4 +127,8 @@ Item.defaultProps = {
 
 // PUBLIC API
 
-export default Item;
+export default React.memo(Item, (prev, next) => {
+  // Only rerender if `todo` or `editing` has changed.
+  // This is a naive check, but works for our purposes.
+  return prev.todo === next.todo && prev.editing === next.editing;
+});

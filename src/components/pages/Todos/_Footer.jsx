@@ -7,6 +7,11 @@ import pluralize from 'pluralize';
 import { pathNames } from '@todomvc/router';
 import { filters } from '@todomvc/view_models/TodoViewModel';
 
+// COMPONENTS
+
+/**
+ * Provides a button component to clear all completed todos.
+ */
 const ClearButton = ({ completedCount, onClearCompleted }) => {
   if (completedCount <= 0) return null;
 
@@ -27,7 +32,21 @@ ClearButton.defaultProps = {
   onClearCompleted: () => {},
 };
 
-const Footer = React.memo(({ count, completedCount, nowShowing, ...props }) => {
+// A memoized `Link` to ensure we don't constantly rerender in the footer when typing
+const MemoLink = React.memo(Link, (prev, next) => {
+  return ['className', 'routeName', 'children'].reduce((memo, key) => memo && prev[key] === next[key], true);
+});
+
+/**
+ * Provides a page component partial including the todo list.
+ *
+ * @param {Object} - the component props
+ * @param {Number} props.count - the total number of todos
+ * @param {Number} props.completedCount - the number of completed todos
+ * @param {string} props.nowShowing - the current filter set
+ * @param {Object} props.props - additional
+ */
+const Footer = ({ count, completedCount, nowShowing, ...props }) => {
   if (!count && !completedCount) return null;
 
   const activeTodoWord = pluralize('item', count);
@@ -39,38 +58,44 @@ const Footer = React.memo(({ count, completedCount, nowShowing, ...props }) => {
       </span>
       <ul className="filters">
         <li>
-          <Link className={classNames({ selected: nowShowing === filters.ALL_TODOS })} routeName={pathNames.TODOS}>
+          <MemoLink className={classNames({ selected: nowShowing === filters.ALL_TODOS })} routeName={pathNames.TODOS}>
             All
-          </Link>
+          </MemoLink>
         </li>{' '}
         <li>
-          <Link
+          <MemoLink
             className={classNames({ selected: nowShowing === filters.ACTIVE_TODOS })}
             routeName={pathNames.TODOS_ACTIVE}>
             Active
-          </Link>
+          </MemoLink>
         </li>{' '}
         <li>
-          <Link
+          <MemoLink
             className={classNames({ selected: nowShowing === filters.COMPLETED_TODOS })}
             routeName={pathNames.TODOS_COMPLETED}>
             Completed
-          </Link>
+          </MemoLink>
         </li>
       </ul>
       {ClearButton({ ...props })}
     </footer>
   );
-});
+};
 
 Footer.propTypes = {
+  completedCount: PropTypes.number,
   count: PropTypes.number,
   nowShowing: PropTypes.string,
 };
 
 Footer.defaultProps = {
   count: 0,
+  completedCount: 0,
   nowShowing: filters.ALL_TODOS,
 };
 
-export default Footer;
+Footer.displayName = 'TodosFooter';
+
+export default React.memo(Footer, (prev, next) => {
+  return Object.keys(Footer.propTypes).reduce((memo, key) => memo && prev[key] === next[key], true);
+});

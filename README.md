@@ -1,10 +1,15 @@
-![TodoMVC](https://github.com/tastejs/todomvc/blob/master/media/logo.png)
+# React MV* Design Pattern
 
-# React MVC Design Pattern
 
-This repo provides an application of the MVVM pattern to a React based version of the TodoMVC project. The design pattern has been adapted to fit the idiosyncrasies of React development, focusing on the recent adoption of contexts and hooks.
+[![Netlify Status](https://api.netlify.com/api/v1/badges/a752348a-56b0-471c-9a61-1881f39fc5ff/deploy-status)](https://app.netlify.com/sites/mvreact/deploys)
+
+This repo provides an application of the MVVM pattern to a React based version of the TodoMVC project. 
+The design pattern has been adapted to fit the idiosyncrasies of React development, focusing on the recent adoption
+of contexts and hooks.
 
 > This architecture assumes React >= 16.8
+
+A demo is available [here](https://mvreact.netlify.com/).
 
 ## Concepts
 
@@ -43,9 +48,10 @@ provides a solid separation of concerns, increases testability, and enforces SRP
 
 ### Structure
 
-In general a project should follow a sane layout, separating visual components from functionality. One caveat to this is the placement of `App.jsx` and `index.jsx`, which are elevated given their status as roots.
+In general a project should follow a sane layout, separating visual components from functionality. 
+One caveat to this is the placement of `App.jsx` and `index.jsx`, which are elevated given their status as roots.
 
-To this point, the following is recommended as a project structure:
+To this point, the following project structure has been followed:
 
 ```
 src/
@@ -84,23 +90,30 @@ src/
 
 ### Components
 
-Components have the responsibility of defining the layout, displaying data, and handling direct user interaction prior to interpretation by business logic. Components can either be simple building blocks or complex elements. In some cases, they can contain significant code and layout instruction, or represent the entry point for a user.
+Components have the responsibility of defining the layout, displaying data, and handling direct user interaction 
+prior to interpretation by business logic. Components can either be simple building blocks or complex elements. 
+In some cases, they can contain significant code and layout instruction, or represent the entry point for a user.
 
-To meet all these varied responsibilities while providing a cognative delineation, we separate into four basic classes, borrowed from "Atomic Design".
+To meet all these varied responsibilities while providing a cognative delineation, we separate into four basic 
+classes, borrowed from "Atomic Design".
 
 atom
 : a basic building block that cannot be subdivided; i.e. `Button`, `Text`, `Input`
 
 molecule
-: a component element composed of a few atoms or other molecues without little to no logic; i.e. `FormField`, `ButtonGroup`, `Card`
+: a component element composed of a few atoms or other molecues without little to no logic; 
+i.e. `FormField`, `ButtonGroup`, `Card`
 
 organism
-: a complex component composed of many atoms and molecules, having significant logic; i.e. `VideoPlayer`, `ImageCarousel`
+: a complex component composed of many atoms and molecules, having significant logic; 
+i.e. `VideoPlayer`, `ImageCarousel`
 
 page
-: a top level component to act as an entry point for a given view; i.e. `Todos`, `EditUser`
+: a top level component to act as an entry point for a given view; 
+i.e. `Todos`, `EditUser`
 
-Under this architecture, only page components receive ViewModels. Organisms and below are passed their properties and event handlers through props.
+Under this architecture, only page components receive ViewModels. Organisms and below are passed their properties 
+and event handlers through props.
 
 > **Page Partials**
 >
@@ -111,3 +124,29 @@ Under this architecture, only page components receive ViewModels. Organisms and 
 > In this case, we follow a standard practice of creating a "partial". These components
 > exist within the context of the page -- under its path, and are prefixed with an
 > underscore "\_".
+
+## Performance Tweaks
+
+When React renders a component, it renders all of the nested components as well, regardless of change.
+Normally, one might never notice as it's only a few hundred microseconds per component. However, 
+as one increases the number of items being rendered this adds up. If state has changed for only one item
+in a large tree, it seems rather wasteful to rerender everything.
+
+React provides a useful tool to prevent this behavior, named `memo`, allowing us to easily compare previous and next state
+to determine if a change is warranted.
+
+## Analysis 
+
+This repo includes `React.memo` in a few areas and the improvements are immediately visible.
+
+![Profile Flame Chart 00](media/flame_00.png)
+
+With memo in place, `TodoItem` components no longer render simply because a user is typing a new todo into the
+`TodosMain` component. It's actually quite clear now, as well, on which interaction the todo is saved and state is
+updated.  
+
+![Profile Flame Chart 01](media/flame_01.png)
+
+Displaying the profile for the save interaction demonstrates that even when the `todos` list state changed, only
+the new item renders a `TodoItem` component. Likewise, the counts for total items changed forcing an update to
+`TodosFooter`. But again we can see that the memoized router links have no need to change and so do not render. 

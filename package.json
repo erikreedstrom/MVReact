@@ -12,16 +12,24 @@
   },
   "dependencies": {
     "@babel/runtime-corejs2": "^7.2.0",
+    "apollo-cache-inmemory": "^1.5.1",
+    "apollo-client": "^2.5.1",
+    "apollo-link-schema": "^1.2.2",
     "classnames": "^2.2.6",
+    "graphql": "^14.3.0",
+    "graphql-tag": "^2.10.1",
+    "graphql-tools": "^4.0.4",
     "pluralize": "^7.0.0",
     "react": "^16.8.6",
+    "react-apollo": "^2.5.5",
     "react-dom": "^16.8.6",
     "react-router5": "^7.1.0",
     "router5": "^7.0.2",
     "router5-plugin-browser": "^7.0.2",
     "router5-plugin-logger": "^7.0.2",
     "todomvc-app-css": "^2.2.0",
-    "todomvc-common": "^1.0.5"
+    "todomvc-common": "^1.0.5",
+    "prop-types": "latest"
   },
   "devDependencies": {
     "@babel/core": "^7.2.0",
