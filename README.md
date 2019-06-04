@@ -135,7 +135,7 @@ in a large tree, it seems rather wasteful to rerender everything.
 React provides a useful tool to prevent this behavior, named `memo`, allowing us to easily compare previous and next state
 to determine if a change is warranted.
 
-## Analysis 
+#### Analysis 
 
 This repo includes `React.memo` in a few areas and the improvements are immediately visible.
 
