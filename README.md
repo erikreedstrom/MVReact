@@ -11,6 +11,15 @@ of contexts and hooks.
 
 A demo is available [here](https://mvreact.netlify.com/).
 
+## Background
+
+React as a concept exists as the V in MV*. Granted, there have been any number of projects created that work in some
+fashion to bring non-view logic into the view. Declarative routers, graphql clients, and other forms of high-order
+components have demonstrated that it is quite easy to introduce anti-patterns.
+
+This architecture reintroduces a separation of concerns, allowing for non-view functionality to remain abstracted
+and focused on a single responsibility.
+
 ## Concepts
 
 The following illustrates the basic flow of within the architecture:
@@ -35,6 +44,15 @@ informing the **Reducer** when state has been updated.
 
 A **Reducer** is used to maintain data bindings (unidirectional) with the view. When the reducer updates state, the
 view updates accordingly. It is triggered through a `dispatch` call invoked by the **Controller**.
+
+> **A note on State Management**
+>
+> State management follows the same design principles as Redux, MobX (react-lite), Unstated (next), _et al_. 
+> It does so, however, without the use of an external library, instead relying on React's `useReducer` hook.
+> 
+> Although the view model architecture currently uses the native reducer, there is nothing that dictates it must
+> do so. The only necessity is that the view controller is able to inform React that state has changed; how it 
+> accomplishes this is very flexible.
 
 ### Service
 
