@@ -13,12 +13,14 @@ A demo is available [here](https://mvreact.netlify.com/).
 
 ## Background
 
-React as a concept exists as the V in MV*. Granted, there have been any number of projects created that work in some
+React as a concept exists solely as the V in MV*. Granted, there have been any number of projects created that work in some
 fashion to bring non-view logic into the view. Declarative routers, graphql clients, and other forms of high-order
 components have demonstrated that it is quite easy to introduce anti-patterns.
 
-This architecture reintroduces a separation of concerns, allowing for non-view functionality to remain abstracted
-and focused on a single responsibility.
+This architecture provides a separation of concerns, ensuring non-view functionality remains abstracted and focused on a
+single responsibility. This allows for highly testable and easily modifiable code.
+
+In short the purpose is to put the VM back in MVVM.
 
 ## Concepts
 
