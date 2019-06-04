@@ -125,7 +125,7 @@ and event handlers through props.
 > exist within the context of the page -- under its path, and are prefixed with an
 > underscore "\_".
 
-### Performance
+### Performance Tweaking
 
 When React renders a component, it renders all of the nested components as well, regardless of change.
 Normally, one might never notice as it's only a few hundred microseconds per component. However, 
