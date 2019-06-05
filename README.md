@@ -20,8 +20,6 @@ components have demonstrated that it is quite easy to introduce anti-patterns.
 This architecture provides a separation of concerns, ensuring non-view functionality remains abstracted and focused on a
 single responsibility. This allows for highly testable and easily modifiable code.
 
-In short the purpose is to put the VM back in MVVM.
-
 ## Concepts
 
 The following illustrates the basic flow of within the architecture:
