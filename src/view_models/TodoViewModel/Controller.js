@@ -58,7 +58,7 @@ class Controller {
   }
 
   // NOTE: Most of the following methods simply refetchQueries, which will automatically
-  // update view state do to the watchQuery. It can be much more performant to optimize
+  // update view state due to the watchQuery. It can be much more performant to optimize
   // utilizing optimistic updates and direct updates to the Apollo cache layer.
 
   /**
