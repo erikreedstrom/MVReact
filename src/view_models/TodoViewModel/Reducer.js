@@ -3,8 +3,6 @@
  *
  * The reducer defines how new state should merge into existing state.
  * It does this through handling events dispatched from the view controller.
- *
- * For instance, when we update the
  */
 class Reducer {
   /**
