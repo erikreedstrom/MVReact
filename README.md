@@ -47,7 +47,7 @@ view updates accordingly. It is triggered through a `dispatch` call invoked by t
 
 > **A note on State Management**
 >
-> State management follows the same design principles as Redux, MobX (react-lite), Unstated (next), _et al_. 
+> State management follows the same design principles as Redux, Unstated (next), _et al_. 
 > It does so, however, without the use of an external library, instead relying on React's `useReducer` hook.
 > 
 > Although the view model architecture currently uses the native reducer, there is nothing that dictates it must
